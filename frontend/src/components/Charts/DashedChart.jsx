@@ -8,30 +8,11 @@ import Chart from 'react-apexcharts'
 */
 
 
-const DashedChart = ({ chartTitle, xAxisTitle, yAxisTitle, names }) => {
-
-  const series = [
-    {
-      name: "Banco 1",
-      data: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
-    },
-    {
-      name: "Banco 2",
-      data: [2,2,2,2,2,2,2,2,2,2,2,2]
-    },
-    {
-      name: "Banco 3",
-      data: [3,3,3,3,3,3,3,3,3,3,3,3]
-    },
-    {
-      name: "Banco 4",
-      data: [4,4,4,4,4,4,4,4,4,4,4,4]
-    },
-  ]
+const DashedChart = ({ chartTitle, xAxisTitle, yAxisTitle, names, series }) => {
 
   const options = {
     chart: {
-      height: 350,
+      height: 600,
       type: 'line',
       zoom: {
         enabled: false
@@ -105,7 +86,7 @@ const DashedChart = ({ chartTitle, xAxisTitle, yAxisTitle, names }) => {
   }
 
   return (
-    <Chart options={options} series={series} type="line" height={320} />
+    <Chart options={options} series={series} type="line" height={700} />
 
   )
 }

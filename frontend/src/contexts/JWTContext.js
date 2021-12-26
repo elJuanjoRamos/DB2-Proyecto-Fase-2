@@ -1,14 +1,8 @@
 import { createContext, useEffect, useReducer } from "react";
-import axios from "../services/axios";
-import { isValidToken, setSession, setUser } from "../utils/jwt";
-import { signUpService, signInService } from "../services/auth.service"
 import { useNavigate } from "react-router-dom";
 
 
 const INITIALIZE = "INITIALIZE";
-const SIGN_IN = "SIGN_IN";
-const SIGN_OUT = "SIGN_OUT";
-const SIGN_UP = "SIGN_UP";
 
 const initialState = {
   isAuthenticated: false,
@@ -51,10 +45,9 @@ function AuthProvider({ children }) {
   useEffect(() => {
     const initialize = async () => {
       try {
-        const accessToken = window.localStorage.getItem("accessToken");
-        if (accessToken && isValidToken(accessToken)) {
-          setSession(accessToken);
-          var user = JSON.parse(localStorage.getItem("user"))
+        const user1 = localStorage.getItem("user")
+        if (user1) {
+          const user = JSON.parse(user1)
           dispatch({
             type: INITIALIZE,
             payload: {
@@ -68,8 +61,7 @@ function AuthProvider({ children }) {
             type: INITIALIZE,
             payload: {
               isAuthenticated: false,
-              user: null,
-              token: null
+              user: null
             },
           });
           //navigate('/')
@@ -89,107 +81,12 @@ function AuthProvider({ children }) {
   }, []);
 
 
-  const signIn = async (email, password) => {
-
-    var response = await signInService({
-      email,
-      password,
-    }, "http://localhost:8000/business/user-auth/")
-
-    console.log(response)
-
-
-    const getError = (array) => {
-      var msg = ""
-      array.forEach(err => {
-        msg += err + '\n'
-      });
-      return msg
-    }
-    try {
-      const { token, user } = response;
-      setSession(token);
-      setUser(user)
-      dispatch({
-        type: SIGN_IN,
-        payload: {
-          user,
-          token
-        },
-      });
-      return { status: 200, message: response.message }
-    }catch(error) {
-      
-      var msg = ""
-      if (response.hasOwnProperty('non_field_errors')) {
-        msg += getError(response.non_field_errors)
-      }
-
-      return { message: msg, status: 400 }
-
-    }
-
-    
-  };
-
-  const signOut = async () => {
-    setSession(null);
-    dispatch({ type: SIGN_OUT });
-  };
-
-
-
-  const signUp = async (formData) => {
-
-    dispatch({
-      type: SIGN_UP,
-      payload: {
-        formData,
-      },
-    });
-
-    var result = await signUpService(formData, "http://localhost:8000/business/user/")
-
-    console.log(result)
-    return result
-
-    /*const getError = (array) => {
-      var msg = ""
-      array.forEach(err => {
-        msg += err + '\n'
-      });
-      return msg
-    }
-    if (result.status === 201) {
-      return result
-    }
-    else {
-      var msg = ""
-
-      if (result.hasOwnProperty('email')) {
-        msg += getError(result.email)
-      }
-      if (result.hasOwnProperty('first_name')) {
-        msg += getError(result.first_name)
-      }
-
-      return { message: msg, status: result.status }
-    }*/
-  };
-
-
-
-  const resetPassword = (email) => console.log(email);
 
   return (
     <AuthContext.Provider
       value={{
         ...state,
         method: "jwt",
-        signIn,
-        signOut,
-        signUp,
-        resetPassword,
       }}
     >
       {children}

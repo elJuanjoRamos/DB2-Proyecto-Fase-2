@@ -86,6 +86,7 @@ const FormikForm = ({ initialValues, validationSchema, functionToExecute, childr
                         type="submit"
                         variant="contained"
                         color="primary"
+                        fullWidth
                         disabled={isSubmitting}
                         mt={3}
                     >

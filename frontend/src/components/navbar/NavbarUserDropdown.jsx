@@ -10,7 +10,6 @@ import {
   IconButton as MuiIconButton,
 } from "@mui/material";
 
-import useAuth from "../../hooks/useAuth";
 
 const IconButton = styled(MuiIconButton)`
   svg {
@@ -22,7 +21,6 @@ const IconButton = styled(MuiIconButton)`
 function NavbarUserDropdown() {
   const [anchorMenu, setAnchorMenu] = React.useState(null);
   const navigate = useNavigate();
-  const { signOut } = useAuth();
   const toggleMenu = (event) => {
     setAnchorMenu(event.currentTarget);
   };
@@ -33,7 +31,7 @@ function NavbarUserDropdown() {
 
   const handleSignOut = async () => {
     navigate("/");
-    await signOut();
+    localStorage.clear()
   };
 
   return (

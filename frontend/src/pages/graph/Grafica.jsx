@@ -1,19 +1,36 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useState } from "react";
 
+// template components
 import Breadcrumb from "../../components/Breadcrumb/Breadcrumb"
 import Card from "../../components/Cards/Card"
+import DashedChart from "../../components/Charts/DashedChart"
+// mui components
 import {
     Grid,
     Button,
 } from "@mui/material";
 
-import DashedChart from "../../components/Charts/DashedChart"
+//services
+import { getPrimerSemestre, getSegundoSemestre } from "../../services/consultas.service";
 
-const funcion = () => {
-    console.log("hola")
-}
 
 const Grafica = () => {
+    const [semestre, setSemestre] = useState([])
+    const [info, setInfo] = useState([])
+
+
+    const getSemestre = async (valor) => {
+        if (valor === 1) {
+            setSemestre(["Noviembre", "Diembre", "Enero", "Febrero", "Marzo", "Abril"])
+            setInfo(await getPrimerSemestre())                
+        }
+        else if (valor === 2) {
+            setInfo(await getSegundoSemestre())                
+            setSemestre(["Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre"])
+        }
+    }
+
+
     return (
         <Fragment>
             
@@ -24,24 +41,22 @@ const Grafica = () => {
                     <Card>
                         <div>
                         <Button
-                            onClick={() => funcion() }
+                            onClick={() => getSemestre(1) }
                         >Primer Semestre
                         </Button>
 
                         <Button
-                            onClick={() => funcion() }
+                            onClick={() => getSemestre(2) }
                         >Segundo Semestre
                         </Button>
                         </div>
 
                         <div>
-                            <DashedChart />
+                            <DashedChart series={info} names={semestre} yAxisTitle={"Ranking bancario"} xAxisTitle={"Meses evaluados"} />
                         </div>
                     </Card>
                 </Grid>
             </Grid>
-
-
         </Fragment>
     )
 }

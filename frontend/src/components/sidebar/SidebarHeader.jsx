@@ -8,7 +8,6 @@ import {
   Typography 
 } from "@mui/material";
 
-import useAuth from "../../hooks/useAuth";
 
 const Header = styled.div`
   background-color: ${(props) =>
@@ -42,7 +41,8 @@ const HeaderBadge = styled(Badge)`
 `;
 
 const SidebarHeader = ({ ...rest }) => {
-  const { user } = useAuth();
+  const user = JSON.parse(localStorage.getItem("user"));
+
   return (
     <Header {...rest}>
       <Grid container spacing={2}>
