@@ -18,6 +18,9 @@ import {
     Typography
 } from "@mui/material";
 
+//services
+import { authUser } from "../../services/auth.service";
+
 // Styled components
 const Wrapper = styled(Paper)`
   padding: ${(props) => props.theme.spacing(6)};
@@ -31,21 +34,20 @@ const Wrapper = styled(Paper)`
  * Default values ​​of the form, these values ​​are not valid and are not sent until the required fields are filled.
  */
 const initialValues = {
-    email: "",
-    password: "",
+    nombre: "",
+    contrasena: "",
     submit: false,
 }
 
 /*
     Object to validate the entry of the elements, 
-    that are required, that meet requirements such as size, the passwords must match, etc.
+    that are required, that meet requirements such as size, the contrasenas must match, etc.
 */
 const validationSchema = Yup.object().shape({
-    email: Yup.string()
-        .email("Debe ingresar un correo válido")
+    nombre: Yup.string()
         .max(255)
-        .required("El correo es requerido"),
-    password: Yup.string().max(255).required("La contraseña es requerida"),
+        .required("El usuario es requerido"),
+    contrasena: Yup.string().max(255).required("La contraseña es requerida"),
 })
 
 
@@ -60,16 +62,28 @@ const SignInPage = () => {
     const navigate = useNavigate();
     const [openSnack, setOpenSnack] = useState(false)
     const [message, setMessage] = useState("")
-
+    
     /*
     That function sends the data to the api to start the session 
     */
     const SignIn = async (form) => {
-
-        console.log(form)
+        const dataUser = await authUser(form)
+        //console.log(dataUser)
         
-        //sendToLogin(form.email, form.password)
-
+        //sendToLogin(form.nombre, form.contrasena)
+        if(dataUser.estado){
+            setMessage("Bienvenido") 
+            setOpenSnack(true);
+            setTimeout(() => {
+                navigate("/dashboard/tabla");
+            }, 1000)
+        }else {
+            setMessage( "Algo salió mal");
+            setOpenSnack(true);
+            setTimeout(() => {
+                setOpenSnack(false);
+            }, 1000)
+        }
         /**
          *  si response no es valido, hacer setOpenSnack(true) setMessage("usuario no valido")
          * 
@@ -119,16 +133,16 @@ const SignInPage = () => {
                 >
 
                     <Field
-                        type="email"
-                        name="email"
-                        label="Correo electrónico"
+                        type="text"
+                        name="nombre"
+                        label="Usuario"
                         as={CustomInputComponent} />
 
 
                     <Field
-                        name="password"
+                        name="contrasena"
                         label="Contraseña"
-                        type="password"
+                        type="contrasena"
                         as={CustomInputComponent} />
                 </FormikForm>
                 <Snackbar message={message} open={openSnack} setOpen={setOpenSnack}></Snackbar>

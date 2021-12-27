@@ -1,18 +1,32 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useState } from "react";
 
 import Breadcrumb from "../../components/Breadcrumb/Breadcrumb"
 import Card from "../../components/Cards/Card"
+import Table from "../../components/Table/Table"
 import {
     Button,
     Grid,
 } from "@mui/material";
 
+//services
+import { getPrimerSemestreTable, getSegundoSemestreTable } from "../../services/consultas.service";
 
 const Dashboard = () => {
-    const funcion = () => {
-        console.log("hola")
-    }
 
+    const [semestre, setSemestre] = useState(1)
+    const [info, setInfo] = useState([])
+
+    const getSemestre = async (valor) => {        
+        if (valor === 1) {
+            setSemestre(1)
+            setInfo(await getPrimerSemestreTable())                            
+        }
+        else if (valor === 2) {
+            setInfo(await getSegundoSemestreTable())                
+            setSemestre(2)
+        }
+        console.log({valor:semestre, data:info})
+    }
     return (
         <Fragment>
             
@@ -23,17 +37,17 @@ const Dashboard = () => {
                     <Card>
                     <div>
                         <Button
-                            onClick={() => funcion() }
+                            onClick={() => getSemestre(1) }
                         >Primer Semestre
                         </Button>
 
                         <Button
-                            onClick={() => funcion() }
+                            onClick={() => getSemestre(2) }
                         >Segundo Semestre
                         </Button>
                         </div>
                         <div>
-                            aqui va la tabla
+                            <Table last={info} semestre={semestre}/>
                         </div>
                     </Card>
                 </Grid>
