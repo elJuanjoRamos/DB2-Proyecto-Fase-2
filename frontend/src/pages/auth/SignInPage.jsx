@@ -68,17 +68,16 @@ const SignInPage = () => {
     */
     const SignIn = async (form) => {
         const dataUser = await authUser(form)
-        //console.log(dataUser)
-        
-        //sendToLogin(form.nombre, form.contrasena)
+        console.log(dataUser)
         if(dataUser.estado){
+            localStorage.setItem("user", JSON.stringify(dataUser.data))
             setMessage("Bienvenido") 
             setOpenSnack(true);
             setTimeout(() => {
                 navigate("/dashboard/tabla");
             }, 1000)
         }else {
-            setMessage( "Algo salió mal");
+            setMessage(dataUser.mensaje);
             setOpenSnack(true);
             setTimeout(() => {
                 setOpenSnack(false);
@@ -142,7 +141,7 @@ const SignInPage = () => {
                     <Field
                         name="contrasena"
                         label="Contraseña"
-                        type="contrasena"
+                        type="password"
                         as={CustomInputComponent} />
                 </FormikForm>
                 <Snackbar message={message} open={openSnack} setOpen={setOpenSnack}></Snackbar>

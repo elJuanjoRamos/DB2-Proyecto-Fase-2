@@ -64,7 +64,7 @@ function AuthProvider({ children }) {
               user: null
             },
           });
-          //navigate('/')
+          navigate('/')
         }
       } catch (err) {
         dispatch({

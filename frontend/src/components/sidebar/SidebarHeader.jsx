@@ -66,8 +66,8 @@ const SidebarHeader = ({ ...rest }) => {
           </HeaderBadge>
         </Grid>
         <Grid item>
-          {user && <HeaderText variant="body2">{user.name} </HeaderText>}
-          {user && <HeaderSubText variant="caption">{ user.companyName || "No company" }</HeaderSubText>}
+          {user && <HeaderText variant="body2">{user.nombre} </HeaderText>}
+          {user && <HeaderSubText variant="caption">Administrador</HeaderSubText>}
 
         </Grid>
       </Grid>

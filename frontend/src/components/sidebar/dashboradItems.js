@@ -16,9 +16,9 @@ const pagesSection = [
       title: "Grafica",
   },
   {
-      href: "/portafolio",
+      href: "/",
       icon: Briefcase,
-      title: "Subir archivos"
+      title: "Cargar archivos a db"
   }
 ];
 
